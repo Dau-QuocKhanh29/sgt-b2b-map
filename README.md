@@ -54,6 +54,8 @@ VITE_API_BASE_URL=https://your-spring-api.example.com/api/v1
 
 Có thể bỏ trống `VITE_API_BASE_URL` nếu bản deploy hiện chỉ dùng demo. Khi đó nút đăng nhập thật sẽ báo Backend chưa được cấu hình thay vì gọi `localhost`. Không đặt password, JWT hoặc secret trong biến `VITE_*` vì các giá trị này được đưa vào bundle trình duyệt.
 
+`VITE_ENABLE_DEMO_MODE` mặc định được xem là `true` khi chưa khai báo, để bản Vercel demo không bị mất nút trải nghiệm. Khi chuyển sang hệ thống thật, đặt rõ `VITE_ENABLE_DEMO_MODE=false`.
+
 ## Kiểm tra
 
 ```bash
