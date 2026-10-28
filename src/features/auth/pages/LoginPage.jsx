@@ -24,14 +24,24 @@ export default function LoginPage() {
     }
   }
 
+  function handleDemo() {
+    setError("");
+    try {
+      authService.startDemoSession();
+      navigate("/map", { replace: true });
+    } catch (demoError) {
+      setError(demoError.message || "Không thể mở chế độ demo.");
+    }
+  }
+
   return (
     <main className="login-page">
       <section className="login-panel">
         <div className="login-brand"><span>SGT</span><div><strong>SAIGON TRADE</strong><small>B2B Partner Map</small></div></div>
         <h1>Đăng nhập nội bộ</h1>
         <p>Truy cập bản đồ mạng lưới đối tác B2B toàn cầu.</p>
-        {env.mockAuthEnabled && (
-          <div className="dev-notice">Development mock: nhập email và mật khẩu bất kỳ. Đây không phải cơ chế bảo mật thật.</div>
+        {env.demoModeEnabled && (
+          <div className="dev-notice">Demo chỉ dùng dữ liệu hư cấu để trải nghiệm bản đồ. Đây không phải phiên đăng nhập an toàn và không cấp quyền truy cập dữ liệu thật.</div>
         )}
         <form onSubmit={handleSubmit}>
           <label>Email<input type="email" value={form.email} onChange={(event) => setForm({ ...form, email: event.target.value })} autoComplete="email" required /></label>
@@ -39,6 +49,12 @@ export default function LoginPage() {
           {error && <div className="form-error" role="alert">{error}</div>}
           <button type="submit" disabled={submitting}>{submitting ? "Đang đăng nhập…" : "Đăng nhập"}</button>
         </form>
+        {env.demoModeEnabled && (
+          <div className="demo-entry">
+            <span>hoặc</span>
+            <button type="button" className="demo-map-button" onClick={handleDemo}>Xem bản đồ demo</button>
+          </div>
+        )}
       </section>
     </main>
   );

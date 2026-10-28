@@ -1,5 +1,6 @@
 import { env } from "../../../config/env.js";
 import apiClient from "../../../config/apiClient.js";
+import { authService } from "../../auth/services/authService.js";
 import mockPartners from "../data/mockPartners.json";
 import {
   buildFilterOptions,
@@ -82,4 +83,15 @@ const apiDataSource = {
   },
 };
 
-export const partnerService = env.dataSource === "api" ? apiDataSource : mockDataSource;
+function activeDataSource() {
+  if (authService.isDemoSession()) return mockDataSource;
+  return env.dataSource === "mock" ? mockDataSource : apiDataSource;
+}
+
+export const partnerService = {
+  getPartners: (...args) => activeDataSource().getPartners(...args),
+  getPartnerById: (...args) => activeDataSource().getPartnerById(...args),
+  getMapPoints: (...args) => activeDataSource().getMapPoints(...args),
+  getMapSummary: (...args) => activeDataSource().getMapSummary(...args),
+  getFilterOptions: (...args) => activeDataSource().getFilterOptions(...args),
+};
